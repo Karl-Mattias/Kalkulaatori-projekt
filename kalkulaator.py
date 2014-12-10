@@ -166,6 +166,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         spacerItem14 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem14)
+        self.btn_back = QtGui.QPushButton(self.centralwidget)
+        self.btn_back.setObjectName(_fromUtf8("btn_back"))
+        self.horizontalLayout_2.addWidget(self.btn_back)
         self.btn_x = QtGui.QPushButton(self.centralwidget)
         self.btn_x.setObjectName(_fromUtf8("btn_x"))
         self.horizontalLayout_2.addWidget(self.btn_x)
@@ -325,6 +328,9 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.btn_K2.setText(_translate("MainWindow", "0", None))
         self.btn_K2.clicked.connect(self.add_K0)
 
+        self.btn_back.setText(_translate("MainWindow", "< ----", None))
+        self.btn_back.clicked.connect(self.back)
+
 
 
         self.sisend = ''
@@ -458,6 +464,13 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         try:
             self.Ksisend = funktsioonid.kahendsüsteemi(self.sisend)
+            if len(self.Ksisend) > 4:
+                ajutine = list(self.Ksisend)
+                for e in range(len(self.Ksisend)+1):
+                    if e%4==0:
+                        ajutine[-e] = ' '+ajutine[-e]
+                self.Ksisend = ''.join(ajutine)
+                    
             self.Kahend_Ekraan.setText(_translate("MainWindow", self.Ksisend, None))
         except:
             None
@@ -468,16 +481,33 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
     def Kuuenda(self):
         if len(self.Ksisend) > 1:
-            if len(self.Ksisend.replace(' ', ''))%4 == 0:
-                self.Ksisend += ' '
             if self.Ksisend[0] == '0':
                 self.Ksisend = self.Ksisend[1:]
 
-        self.sisend = str(funktsioonid.kümnendsüsteemi(self.Ksisend))
+        if len(self.Ksisend) > 4:
+                ajutine = list(self.Ksisend.replace(' ',''))
+                for e in range(len(self.Ksisend.replace(' ',''))+1):
+                    if e%4==0:
+                        ajutine[-e] = ' '+ajutine[-e]
+                self.Ksisend = ''.join(ajutine)
+
+        
+        self.sisend = str(funktsioonid.kümnendsüsteemi(self.Ksisend.replace(' ','')))
+        print(self.sisend)
 
         self.Kahend_Ekraan.setText(_translate("MainWindow", self.Ksisend, None))
 
-        self.Ekraan.setText(_translate("MainWindow", str(funktsioonid.kümnendsüsteemi(self.Ksisend)), None))
+        self.Ekraan.setText(_translate("MainWindow", self.sisend, None))
+
+
+    def back(self):
+        if len(self.Ksisend) <= 1:
+            self.Ksisend = '0'
+        elif self.Ksisend[-1] == ' ':
+            self.Ksisend = self.Ksisend[0:-3]
+        else:
+            self.Ksisend = self.Ksisend[0:-1]
+        self.Kuuenda()
 
     
 if __name__ == '__main__':

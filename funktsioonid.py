@@ -37,6 +37,7 @@ def kahendsüsteemi(arv):
         return kahendsüsteemi(int(arv)//2) + n[int(arv)%2]
 
 def kümnendsüsteemi(arv):
+    print(arv)
     vastus=0
     for e in range(len(arv)):
         if arv[-1-e] == '1':
